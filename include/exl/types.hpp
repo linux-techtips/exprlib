@@ -1,18 +1,19 @@
 #pragma once
 
-#define fn auto
+#include <cstddef>
+#include <cstdint>
 
-using s8 = char;
-using u8 = unsigned char;
+using s8 = int8_t;
+using u8 = uint8_t;
 
-using s16 = short int;
-using u16 = unsigned short int;
+using s16 = int16_t;
+using u16 = uint16_t;
 
-using s32 = int;
-using u32 = unsigned int;
+using s32 = int32_t;
+using u32 = uint32_t;
 
-using s64 = long int;
-using u64 = unsigned long int;
+using s64 = int64_t;
+using u64 = uint64_t;
 
-using ssize = s64;
-using usize = u64;
+using ssize = std::ptrdiff_t;
+using usize = std::size_t;
