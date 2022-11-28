@@ -1,0 +1,2 @@
+/usr/bin/ar qc libexl.a CMakeFiles/exl.dir/errs.cpp.o CMakeFiles/exl.dir/mem.cpp.o CMakeFiles/exl.dir/utils.cpp.o
+/usr/bin/ranlib libexl.a
