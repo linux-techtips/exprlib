@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/entry.dir/entry_test.cpp.o -o entry  ../src/libexl.a ../_deps/fmtlib-build/libfmt.a 
