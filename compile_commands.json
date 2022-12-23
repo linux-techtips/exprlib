@@ -4,13 +4,18 @@
       "/usr/bin/c++",
       "-I/home/m3rlin/Code/exprlib/src/../include",
       "-I/home/m3rlin/Code/exprlib/build/_deps/fmtlib-src/include",
+      "-isystem",
+      "/home/m3rlin/Code/exprlib/build/_deps/googletest-src/googletest/include",
+      "-isystem",
+      "/home/m3rlin/Code/exprlib/build/_deps/googletest-src/googletest",
+      "-g",
       "-std=c++20",
       "-c",
       "-o",
-      "CMakeFiles/entry.dir/entry_test.cpp.o",
+      "tests/CMakeFiles/entry.dir/entry_test.cpp.o",
       "/home/m3rlin/Code/exprlib/tests/entry_test.cpp"
     ],
-    "directory": "/home/m3rlin/Code/exprlib/build/tests",
+    "directory": "/home/m3rlin/Code/exprlib/build",
     "file": "/home/m3rlin/Code/exprlib/tests/entry_test.cpp",
     "output": "/home/m3rlin/Code/exprlib/build/tests/CMakeFiles/entry.dir/entry_test.cpp.o"
   }

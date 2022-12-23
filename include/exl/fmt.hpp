@@ -25,9 +25,20 @@ inline auto print(const T format, const Args &...args) -> void {
 }
 
 template <typename T, typename... Args>
+inline auto eprint(const T format, const Args &...args) -> void {
+  fmt::print(stderr, format, args...);
+}
+
+template <typename T, typename... Args>
 inline auto println(const T format, const Args &...args) -> void {
   fmt::print(format, args...);
   std::putc('\n', stdout);
+}
+
+template <typename T, typename... Args>
+inline auto eprintln(const T format, const Args &...args) -> void {
+  fmt::print(stderr, format, args...);
+  std::putc('\n', stderr);
 }
 
 inline auto center(std::string &str, const usize pad, const char symbol = ' ')

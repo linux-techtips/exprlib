@@ -6,15 +6,6 @@ file(GLOB exprlib_headers
     "${PROJECT_SOURCE_DIR}/include/exprlib/*.hpp"
 )
 
-#file(GLOB exprlib_src
-#    "${PROJECT_SOURCE_DIR}/src/*.cpp"
-#)
-
-#add_library(exl
-#    ${exprlib_src}
-#    ${exprlib_headers}
-#)
-
 add_library(exl INTERFACE)
 
 target_include_directories(exl INTERFACE ../include)

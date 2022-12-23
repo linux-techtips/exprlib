@@ -9,8 +9,19 @@
 
 namespace exl::ptr {
 
+template <typename U, typename T>
+[[nodiscard]] constexpr inline auto cast(const T *ptr) -> U * {
+  return (U *)(ptr); // NOLINT
+}
+
 template <typename T> auto copy(const T *src, T *dst, const usize len) -> T * {
   std::copy(src, src + len, dst);
+  return dst;
+}
+
+template <typename T>
+auto copy_bytes(const T *src, T *dst, const usize len) -> T * {
+  std::memcpy(dst, src, len);
   return dst;
 }
 
@@ -20,13 +31,34 @@ template <typename T>
 }
 
 template <typename T>
+[[nodiscard]] constexpr inline auto add_bytes(T *ptr, const usize offset)
+    -> T * {
+  ptr::cast<T>(ptr::cast<u8>(ptr) + offset);
+}
+
+template <typename T>
 [[nodiscard]] constexpr inline auto sub(T *ptr, const usize offset) -> T * {
   return ptr - offset;
 }
 
-template <typename U, typename T>
-[[nodiscard]] constexpr inline auto cast(const T *ptr) -> U * {
-  return (U *)(ptr); // NOLINT
+template <typename T>
+[[nodiscard]] constexpr inline auto sub_bytes(T *ptr, const usize offset)
+    -> T * {
+  ptr::cast<T>(ptr::cast<u8>(ptr) - offset);
+}
+
+template <typename T, typename U>
+[[nodiscard]] constexpr inline auto diff(T *rhs, U *lhs) -> ssize {
+  return rhs - lhs;
+}
+
+template <typename T>
+[[nodiscard]] constexpr inline auto offset(const usize offset) -> T * {
+  return (T *)(offset); // NOLINT
+}
+
+template <typename T> [[nodiscard]] constexpr inline auto as_ref(T *ptr) -> T {
+  return *ptr;
 }
 
 template <typename T>
@@ -47,8 +79,8 @@ template <typename T> struct Slice {
   using Ptr = T *;
   using Ref = T &;
 
-  using It = Iter<int>;
-  using CIt = CIter<int>;
+  using It = Iter<T>;
+  using CIt = CIter<T>;
 
   Ptr ptr;
   usize cap;
@@ -78,12 +110,12 @@ template <typename T> struct Slice {
     return CIt::from_unchecked(this->as_ptr(cap));
   }
 
-  [[nodiscard]] constexpr auto operator[](const usize offset)
-      -> Option<std::reference_wrapper<T>> {
+  [[nodiscard]] constexpr auto operator[](const usize offset) -> Ref {
     if (offset >= cap) {
-      return {};
+      panic(fmt::format("Tried to index slice of size {}, at offset {}", cap,
+                        offset));
     }
-    return {this->as_ref(offset)};
+    return this->as_ref(offset);
   }
 
   [[nodiscard]] constexpr auto slice(const usize start, const usize end) const
