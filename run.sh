@@ -1,5 +1,11 @@
+#!/bin/bash
+
+if [ ! -d build ]; then
+    mkdir build
+fi
+
 set -xe
 
-cmake -S . -B build
+cmake -DCMAKE_BUILD_TYPE=ASAN -DCMAKE_BUILD_TYPE=Debug -S . -GNinja -B build
 bear -- cmake --build build
-./build/tests/entry
+time ./build/tests/entry

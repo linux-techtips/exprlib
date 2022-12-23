@@ -1,10 +1,9 @@
 #include <exl/core.hpp>
-#include <fmt/core.h>
+
+using namespace exl; // NOLINT
 
 auto main() -> int {
-  fmt::print("[STATUS] Begining test...\n\n");
+  println("[STATUS] Begining test...\n");
 
-  static_assert
-
-  fmt::print("\n[SUCCESS] Test complete!\n");
+  println("\n[SUCCESS] Test complete!");
 }
