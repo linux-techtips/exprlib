@@ -47,11 +47,6 @@ concept Iterator = requires(T t) {
 };
 
 template <typename T>
-concept Matchable = requires(T t) {
-  {std::visit(t)};
-};
-
-template <typename T>
 concept Sized = requires(T t) {
   {t.size()};
 };

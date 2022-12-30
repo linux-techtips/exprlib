@@ -52,3 +52,15 @@ inline auto center(std::string &str, const usize pad, const char symbol = ' ')
 }
 
 } // namespace exl
+
+template <typename T> struct fmt::formatter<std::reference_wrapper<T>> {
+  constexpr auto parse(format_parse_context &ctx) -> decltype(ctx.begin()) {
+    return ctx.begin();
+  }
+
+  template <typename FormatContext>
+  auto format(const std::reference_wrapper<T> wrapper, FormatContext &ctx) const
+      -> decltype(ctx.out()) {
+    return fmt::format_to(ctx.out(), "{}", wrapper.get());
+  }
+};

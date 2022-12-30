@@ -119,7 +119,7 @@ TEST(mem, TestSliceAsPtr) {
   u8 arr[len]{1, 2, 3};                             // NOLINT
   auto slice = Slice<u8>::from_unchecked(arr, len); // NOLINT
 
-  ASSERT_EQ(arr + 1, slice.as_ptr(1));
+  ASSERT_EQ(arr + 1, slice.as_ptr(1)); // NOLINT
 }
 
 TEST(mem, TestSliceAsRef) {

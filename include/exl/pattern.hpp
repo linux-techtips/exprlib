@@ -31,6 +31,14 @@ SOFTWARE. */
 #include <tuple>
 #include <variant>
 
+namespace exl::traits {
+template <typename T>
+concept Matchable = requires(T t) {
+  {std::visit([](auto &&arg) { return; }, t)};
+};
+
+} // namespace exl::traits
+
 namespace exl {
 
 template <typename... Ts> using Union = std::variant<Ts...>;
