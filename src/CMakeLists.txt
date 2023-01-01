@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.24)
 
-set(CMAKE_CXX_FLAGS_DEBUG "-g -ldl -export-dynamic")
+set(CMAKE_CXX_FLAGS_DEBUG "-g -ldl -export-dynamic -march=native")
+set(CMAKE_CXX_FLAGS_RELEASE "-ldl -export-dynamic -O3 -march=native")
 
 file(GLOB exprlib_headers
     "${PROJECT_SOURCE_DIR}/include/exprlib/*.hpp"

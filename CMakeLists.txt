@@ -19,6 +19,9 @@ if(${CMAKE_PROJECT_NAME} STREQUAL ${PROJECT_NAME})
     include(CTest)
 endif()
 
+string(TOUPPER ${CMAKE_SYSTEM_NAME} SYSTEM_NAME)
+add_definitions("-DSYSTEM_${SYSTEM_NAME}")
+
 include(FetchContent)
 FetchContent_Declare(
     fmtlib

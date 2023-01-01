@@ -155,6 +155,7 @@ TEST(mem, TestSliceIndex) {
 }
 
 auto main(int argc, char **argv) -> int {
+  panic_register();
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
