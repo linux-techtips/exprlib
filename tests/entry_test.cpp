@@ -154,6 +154,10 @@ TEST(mem, TestSliceIndex) {
   ASSERT_EQ(arr[1], slice[1]);
 }
 
+TEST(traits, IsPattern) {
+  static_assert(traits::Pattern<Option<u8>>);
+}
+
 auto main(int argc, char **argv) -> int {
   panic_register();
   ::testing::InitGoogleTest(&argc, argv);
