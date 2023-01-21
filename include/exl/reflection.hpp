@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <exl/traits.hpp>
+#include <exl/types.hpp>
 
 namespace exl::reflection {
 

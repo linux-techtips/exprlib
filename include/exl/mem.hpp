@@ -3,9 +3,21 @@
 #include <exl/fmt.hpp>
 #include <exl/iter.hpp>
 #include <exl/option.hpp>
-#include <exl/traits.hpp>
 
 #include <algorithm>
+
+namespace exl::traits {
+template <typename T>
+concept Sized = requires(T t) {
+  {t.size()};
+};
+
+template <typename T>
+concept ToPointer = requires(T ptr) {
+  {ptr.as_ptr()};
+};
+
+} // namespace exl::traits
 
 namespace exl::ptr {
 

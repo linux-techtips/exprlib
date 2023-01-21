@@ -158,6 +158,29 @@ TEST(traits, IsPattern) {
   static_assert(traits::Pattern<Option<u8>>);
 }
 
+struct ReadError {
+  [[nodiscard]] auto description() const -> std::string {
+    return "Read Error";
+  }
+};
+
+struct WriteError {
+  [[nodiscard]] auto description() const -> std::string {
+    return "Write Error";
+  }
+};
+
+using IOError = Union<ReadError, WriteError>;
+
+TEST(traits, Error) {
+  auto err = IOError{ReadError{}};
+  ASSERT_EQ(
+    match(err)(
+      [](auto&& arg) { return arg.description(); }
+    ), "Read Error"
+  ); 
+}
+
 auto main(int argc, char **argv) -> int {
   panic_register();
   ::testing::InitGoogleTest(&argc, argv);

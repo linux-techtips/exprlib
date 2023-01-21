@@ -1,6 +1,16 @@
 #pragma once
 
-#include <exl/traits.hpp>
+#include <exl/option.hpp>
+
+namespace exl::traits {
+
+template <typename T>
+concept Range = requires(T ptr) {
+  {ptr.begin()};
+  {ptr.end()};
+};
+
+} // namespace exl::traits
 
 namespace exl {
 

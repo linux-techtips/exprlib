@@ -32,9 +32,10 @@ SOFTWARE. */
 #include <variant>
 
 namespace exl::traits {
+
 template <typename T>
-concept Matchable = requires(T t) {
-  {std::visit([](auto &&arg) { return; }, t)};
+concept Pattern = requires(T t) {
+  {std::visit([](auto&& arg) { return; }, std::forward<T>(t))};
 };
 
 } // namespace exl::traits
