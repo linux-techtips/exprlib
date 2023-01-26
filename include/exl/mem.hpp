@@ -5,17 +5,16 @@
 #include <exl/option.hpp>
 
 #include <algorithm>
+#include <memory_resource>
 
 namespace exl::traits {
 template <typename T>
-concept Sized = requires(T t) {
-  {t.size()};
-};
+concept Sized = sizeof(T) > 0;
 
 template <typename T>
 concept ToPointer = requires(T ptr) {
-  {ptr.as_ptr()};
-};
+                      { ptr.as_ptr() };
+                    };
 
 } // namespace exl::traits
 
@@ -85,7 +84,77 @@ template <typename T> [[nodiscard]] auto addr(const std::string &str) -> T * {
 } // namespace exl::ptr
 
 namespace exl {
-template <typename T> struct Slice {
+
+template <traits::Sized T> struct NonNull {
+  using Self = NonNull<T>;
+  using Val = T;
+  using Ptr = T const *;
+  using Ref = T &;
+
+  Ptr ptr{};
+
+  [[nodiscard]] static constexpr auto dangling() noexcept -> Self {
+    return Self{ptr::addr(alignof(Val))};
+  }
+
+  [[nodiscard]] static constexpr auto from_unchecked(Ptr _ptr) noexcept
+      -> Self {
+    return Self{.ptr = _ptr};
+  }
+
+  [[nodiscard]] static constexpr auto from(Ptr _ptr) noexcept -> Option<Self> {
+    if (_ptr == nullptr) {
+      return {};
+    }
+    return Self::from_unchecked(_ptr);
+  }
+};
+
+template <traits::Sized T> struct RcBox {
+  using Self = RcBox<T>;
+  using Val = T;
+
+  usize strong{};
+  usize weak{};
+  T val{};
+};
+
+template <traits::Sized T> struct Rc {
+  using Self = Rc<T>;
+  using Val = T;
+  using Ptr = T const *;
+  using Ref = T &;
+};
+
+template <traits::Sized T, typename A = std::pmr::polymorphic_allocator<T>> struct Box {
+  using Self = Box<T, A>;
+  using Val = T;
+  using Ptr = T *;
+  using Ref = T &;
+  using Alloc = A;
+
+  Ptr ptr{};
+
+  [[nodiscard]] static constexpr auto from_unchecked(T &&data) noexcept
+      -> Self {
+  }
+
+  [[nodiscard]] static constexpr auto from(T &&data) noexcept -> Option<Self> {
+    auto p = new (std::nothrow) T{std::move(data)}; // NOLINT
+    if (p == nullptr) {
+      return {};
+    }
+    return {Self{.ptr = p}};
+  }
+
+  Box(const Box &box) = delete;
+  auto operator=(const Box &box) -> Box & = delete;
+
+  Box(Box &&box) = delete;
+  auto operator=(Self &&box) -> Box & = delete;
+};
+
+template <traits::Sized T> struct Slice {
   using Self = Slice<T>;
   using Val = T;
   using Ptr = T *;
@@ -94,8 +163,8 @@ template <typename T> struct Slice {
   using It = Iter<T>;
   using CIt = CIter<T>;
 
-  Ptr ptr;
-  usize cap;
+  Ptr ptr{};
+  usize cap{};
 
   [[nodiscard]] constexpr auto as_ptr(const usize offset = 0) const -> Ptr {
     return ptr::add(ptr, offset);

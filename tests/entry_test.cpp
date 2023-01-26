@@ -158,6 +158,11 @@ TEST(traits, IsPattern) {
   static_assert(traits::Pattern<Option<u8>>);
 }
 
+TEST(traits, Sized) {
+  static_assert(traits::Sized<u8>);
+  static_assert(!traits::Sized<int[0]>);
+}
+
 struct ReadError {
   [[nodiscard]] auto description() const -> std::string {
     return "Read Error";
