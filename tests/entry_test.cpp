@@ -19,8 +19,11 @@ TEST(fmt, TestPrintln) {
 
 TEST(defer, TestDefer) {
   auto res = 0;
-  auto _ = defer([&res]() { ++res; });
-  ASSERT_EQ(res, 0);
+  {
+    auto d = defer([&res]() { ++res; });
+  }
+
+  ASSERT_EQ(res, 1);
 }
 
 TEST(iter, TestRangePositive) {
@@ -183,11 +186,10 @@ TEST(traits, Error) {
     match(err)(
       [](auto&& arg) { return arg.description(); }
     ), "Read Error"
-  ); 
+  );
 }
 
 auto main(int argc, char **argv) -> int {
-  panic_register();
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
